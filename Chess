@@ -1,0 +1,245 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package chess;
+import static chess.RecursiveTest.buildThePath;
+import java.io.*;
+import java.awt.Point;
+import java.util.*; 
+
+/**
+ *
+ * @author Megan
+ */
+class ChessBoardLoc {
+    int row = 0;
+    int col = 0;
+    
+    //6X6 ChessBoard
+    int maxRow = 6;
+    int maxCol= 6;
+    
+    public void ChessBoardLoc(){}
+    
+    public void setRow (int r)
+    {row= r ; return;}
+    
+    public void setCol (int c)
+    {col = c; return;}
+    
+    public void setRowCol (int r, int c) 
+    { row = r;
+      col = c;
+    }
+    
+    public int getRow () {return row;}
+     
+    public int getCol () {return col;}
+    
+    public String printString () {return "("+row+"," + col + ")";}
+    
+    public boolean isEqual (ChessBoardLoc x)
+    { 
+    if  ((row == x.getRow()) && (col == x.getCol()))
+        return true;
+    else   
+        return false;
+    }
+    
+    public boolean isValid (){
+        if ((row<= maxRow) && (col<= maxCol) && (col>0) && (row>0))
+            return true;
+        else
+            return false;
+            
+  
+    }
+}
+
+
+
+
+
+
+class RecursiveTest {
+    
+    public static void buildThePath (String path, ChessBoardLoc start, ChessBoardLoc end, int max)
+    { String tempPath = new String ();
+    
+      if (start.isEqual(end))
+      {System.out.println("Good path found:" + path +start.printString());
+      return;
+      }
+      else 
+          if (max <= 0)
+          {System.out.print("");
+          }
+          else 
+      
+          { ChessBoardLoc tempStart = new ChessBoardLoc();
+       
+          //ADJACENT SQUARE MOVES
+          //Row-1, col
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow()-1, start.getCol());
+            if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+            
+      
+          //Row-1, col+1
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow()-1, start.getCol()+1);
+           if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+            
+            
+          //Row, col+1
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow(), start.getCol()+1);
+            if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+            
+          //Row+1, col+1
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow()+1, start.getCol()+1);
+            if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+            
+          //Row+1, col
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow()+1, start.getCol());
+            if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+            
+          //Row+1, col-1
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow()+1, start.getCol()-1);
+            if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+            
+          //Row, col-1
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow(), start.getCol()-1);
+            if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+            
+          //Row-1, col-1
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow()-1, start.getCol()-1);
+            if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+            
+          //LSHAPE MOVES 
+          //Row-2, col+1
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow()-2, start.getCol()+1);
+            if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+            
+          //Row-1, col+2 *******
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow()-1, start.getCol()+2);
+            if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+          
+          //Row+1, col+2
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow()+1, start.getCol()+2);
+            if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+            
+          //Row+2, col+1  
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow()+2, start.getCol()+1);
+            if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+            
+          //Row+2, col-1
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow()+2, start.getCol()-1);
+            if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+            
+          //Row+1, col-2
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow()+1, start.getCol()-2);
+            if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+            
+          //Row-1, col-2
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow()-1, start.getCol()-2);
+            if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+            
+          //Row-2, col-1
+            tempStart.setRowCol (start.getRow(), start.getCol());
+            tempPath = path +start.printString(); 
+            tempStart.setRowCol(start.getRow()-2, start.getCol()-1);
+            if(tempStart.isValid()){
+             buildThePath (tempPath,tempStart, end,max-1 );}
+            else return;
+            
+            
+       
+       
+       
+       
+            }
+    
+            }
+}
+public class Chess {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        // TODO code application logic here
+        ChessBoardLoc startLocation = new ChessBoardLoc();
+        startLocation.setRowCol(3,2);
+        
+        ChessBoardLoc endLocation = new ChessBoardLoc();
+        endLocation.setRowCol(2, 5);
+        
+        int numMaxMoves = 4;
+        
+        String path = new String("");
+        
+        buildThePath(path, startLocation, endLocation, numMaxMoves);
+        
+    }}
+    
+
