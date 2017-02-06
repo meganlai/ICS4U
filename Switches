@@ -1,0 +1,237 @@
+package javaapplication18;
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+
+
+
+/**
+ *
+ * @author Megan
+ */
+public class UpDown {
+
+    /**
+     * @param args the command line arguments
+     */
+
+
+
+    public static int updown(List < Integer > array) {
+        //checks if the array follows an up then down pattern
+        int switches = 0;
+        boolean done = false; 
+        int direction = 1; //+1 = up     -1 = down
+        int i = 0; 
+
+        //While var done is false and count is less than the array length 
+        //continue to check for trend
+        while (!done && i < array.size() - 1) {
+            if (direction == 1) //+1 means up trend
+            {
+                //if the first element is smaller than the second element
+                //add one to the number of switches
+                if (array.get(i) < array.get(i + 1)) {
+                    switches++;
+                    
+
+                } else {
+                    //if it does not then the pattern is discontinued
+                    done = true;
+                }
+
+            } else { //if direction != 1 it must be = -1 (down trend)
+                //if first element is greater than second element then the trend 
+                //is going down
+               
+                if (array.get(i) > array.get(i + 1)) {
+                    switches++;
+                } else done = true;
+            }
+            //increase the counter
+            i++;
+            //switch the direction by multiplying by -1 to account for which direction
+            //is next in the pattern
+            direction = direction * -1;
+
+        }
+        //return the number of switches that were detected
+        return switches;
+
+    }
+
+
+    public static int downup(List < Integer > array) {
+        //checks if the array follows a down then up trend
+        int switches = 0;
+        boolean done = false;
+        int direction = -1; //+1 = up     -1 = down
+        int i = 0;
+
+        //While var done is false and count is less than the array length 
+        //continue to check for trend
+        while (!done && i < (array.size()) - 1) {
+            if (direction == -1) //+1 means up trend
+            {
+                if (array.get(i) > array.get(i + 1)) {
+                    switches++;
+                    //if the first element is greater than the second element
+                    //then add one to the switch counter
+
+                } else {
+                    done = true;
+                }
+
+            } else { //if direction != -1 it must be = 1 (up trend)
+
+                if (array.get(i) < array.get(i + 1)) {
+                    switches++;
+                    //if the second element is greater than the first
+                    //AND the direction is looking gor an up trend
+                    // add one to the switch counter
+                } else done = true;
+            }
+            i++;
+            //multiply the direction by -1 to switch it to the opposite
+            direction = direction * -1;
+
+        }
+        //return the number of switches detected
+        return switches;
+
+    }
+
+
+
+
+    public static void main(String[] args) {
+        // TODO code application logic here
+
+        //The array that is provided to figure out how many zig zag sequences are within
+        int givenarray[] = {
+            4,
+            1,
+            6,
+            5,
+            0,
+            2,
+            0,
+            6,
+            0,
+            1
+               
+                
+        };
+        
+        //Creating a 2d array that will store each of the possible 
+        // dimensions: length of given array by 2^length of given array
+        int numCol = givenarray.length;
+        int numRow = (int) Math.pow(2.0, (double) givenarray.length);
+
+        int x[][] = new int[numCol][numRow];
+
+        //developing each of the possible combinations of for the given array 
+        //then printing out each of the following combinations
+        for (int i = 0; i < numCol; i++) {
+
+            int arrayval = 1;
+
+            int numSwitch = (int) Math.pow(2.0, (double)(i + 1));
+            int RowSwitch = numRow / numSwitch;
+
+            System.out.print(numSwitch);
+            System.out.println();
+            int startRow = 0;
+
+            for (int s = 0; s < numSwitch; s++) {
+                for (int j = startRow; j < startRow + RowSwitch; j++) {
+
+                    x[i][j] = arrayval;
+                }
+                if (arrayval == 0)
+                    arrayval = 1;
+                else arrayval = 0;
+                startRow = startRow + RowSwitch;
+
+
+            }
+
+
+
+
+
+        }
+
+        for (int b = 0; b < 16; b++) {
+            for (int a = 0; a < 4; a++) {
+                System.out.print(x[a][b]);
+            }
+            System.out.println();
+        }
+
+        
+
+        int resultarrayup[] = new int[numRow];
+        int resultarraydown[] = new int[numRow];
+        ArrayList < Integer > maskedarray = new ArrayList < Integer > ();
+
+        //taking each possible combination of the given array and checking for either
+        //an up-down or down-up trend
+        for (int i = 0; i < numRow; i++) {
+            // apply mask array to see which digits to "keep".
+
+            for (int j = 0; j < numCol; j++) {
+                if (x[j][i] == 1)
+                    maskedarray.add(givenarray[j]);
+
+                //check if the masked array follows either pattern
+                resultarrayup[i] = updown(maskedarray);
+                resultarraydown[i] = downup(maskedarray);
+
+
+
+                for (int a = 0; a < maskedarray.size(); a++) {
+                    System.out.print(maskedarray.get(a) + " ");
+
+                }
+               
+                System.out.println();
+
+
+            }
+            //Print the amount of switches in the updown switches and the downup switches
+            //for each combination
+            System.out.println("UP Result :" + resultarrayup[i]);
+            System.out.println("DOWN Result :" + resultarraydown[i]);
+            System.out.println("-------");
+            //clear masked array so that it can be refilled
+            maskedarray.clear();
+        }
+        //check for the highest number of switches possible in the given array
+        int greatest = 0;
+
+        for (int i = 0; i < numRow; i++) {
+
+            if (resultarrayup[i] > greatest)
+                greatest = resultarrayup[i];
+
+            if (resultarraydown[i] > greatest)
+                greatest = resultarraydown[i];
+        }
+
+        // print the greatest number of zig zag switches withing the given array
+        System.out.print("Greatest # of Zig-Zag Sequences within  ");
+        for (int i = 0; i < givenarray.length; i++) {
+      System.out.print(givenarray[i] + " ");
+         }
+
+      System.out.println("---> " + greatest);
+
+      System.out.println("");
+
+
+  }
+  }
